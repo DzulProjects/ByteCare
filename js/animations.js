@@ -83,6 +83,7 @@
     var PURPLE = "124,58,237"; // --bc-purple
     var ACCENT = "168,85,247"; // --bc-purple-accent
     var INK = "13,13,15"; // --bc-black
+    var NODE = INK; // node base color (theme-aware, "R,G,B")
 
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var W = 0;
@@ -239,7 +240,7 @@
         }
         ctx.fillStyle = n.glow
           ? "rgba(" + PURPLE + ",0.9)"
-          : "rgba(" + INK + ",0.55)";
+          : "rgba(" + NODE + ",0.55)";
         ctx.beginPath();
         ctx.arc(px, py, n.r, 0, Math.PI * 2);
         ctx.fill();
@@ -296,6 +297,15 @@
         size();
       }, 200);
     });
+
+    function readNodeColor() {
+      var v = getComputedStyle(document.documentElement)
+        .getPropertyValue("--bc-node")
+        .trim();
+      if (v) NODE = v;
+    }
+    readNodeColor();
+    window.addEventListener("themechange", readNodeColor);
 
     size();
     start();
